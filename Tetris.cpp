@@ -1,15 +1,16 @@
 ﻿#include <iostream>
 #include <windows.h>
-#define HEIGHT 24
+#define HEIGHT 16
 #define WIDTH 8
 #define PIXEL_OFF 46
 #define PIXEL_ON 64
-#define TIME_SLEEP 1000
+#define TIME_SLEEP 100
 #define ROTATE_KEY 87
 #define DROP_KEY 83
 #define LEFT_KEY 65
 #define RIGHT_KEY 68
 #define AMOUNT_OF_ADJ 3
+#define TICKS_FOR_MOVE 5
 
 using namespace std;
 
@@ -54,17 +55,19 @@ struct item_t {
 
 u8 matrix[HEIGHT][WIDTH];
 item_t item;
+u8 timer = 0;
 
 i8 L_FRONT[AMOUNT_OF_ADJ][2] = { {N,U},{N,D},{R,D} };
 i8 L_BACK[AMOUNT_OF_ADJ][2] = { {N,U},{N,D},{L,D} };
 i8 SQUARE[AMOUNT_OF_ADJ][2] = { {N,U},{R,U},{R,N} };
 i8 LINE[AMOUNT_OF_ADJ][2] = { {N,U},{N,D},{N,UU} };
-i8 Z[AMOUNT_OF_ADJ][2] = { {N,U},{L,U},{N,R} };
+i8 Z[AMOUNT_OF_ADJ][2] = { {N,U},{L,U},{R,N} };
 i8 Z_BACK[AMOUNT_OF_ADJ][2] = { {N,U},{L,N},{R,U} };
 i8 T[AMOUNT_OF_ADJ][2] = { {N,U},{L,N},{R,N} };
 i8 PENIS[AMOUNT_OF_ADJ][2] = { {N,U},{L,D},{R,D} };
 
 u8 RandomGen(u8 min, u8 max) {
+    max++;
     return (rand() % (max - min) + min);
 }
 
@@ -173,9 +176,10 @@ void FillItem(i8 item_rotated[AMOUNT_OF_ADJ][2]) {
     }
 }
 
-u8 CheckPosition(u8& value, u8(*Function)(u8, u8)) {
+void CheckPosition(u8& value, u8(*Function)(u8, u8)) {
     u8 x = item.x;
     u8 y = item.y;
+    value &= Function(x, y);
     i8 item_rotated[AMOUNT_OF_ADJ][2];
     FillItem(item_rotated);
     for (int i = 0; i < item.rotation; i++) {
@@ -188,14 +192,6 @@ u8 CheckPosition(u8& value, u8(*Function)(u8, u8)) {
     value &= Function(x + item_rotated[0][0], y + item_rotated[0][1]);
     value &= Function(x + item_rotated[1][0], y + item_rotated[1][1]);
     value &= Function(x + item_rotated[2][0], y + item_rotated[2][1]);
-    return value;
-}
-
-void DoStuff(u8& value, u8(*Function)(u8, u8)) {
-    u8 x = item.x;
-    u8 y = item.y;
-    value &= Function(x, y);
-    CheckPosition(value, Function);
 }
 
 u8 IsMoveable(u8 direction) {
@@ -214,14 +210,12 @@ u8 IsMoveable(u8 direction) {
     default:
         break;
     }
-    u8 x = item.x;
-    u8 y = item.y;
     u8 is_moveable = 1;
-    is_moveable &= checkFunction(x, y);
+    is_moveable &= checkFunction(item.x, item.y);
     if (direction == ROTATION) {
         item.rotation = (item.rotation + 1) % 4;
     }
-    DoStuff(is_moveable, checkFunction);
+    CheckPosition(is_moveable, checkFunction);
     if (direction == ROTATION) {
         item.rotation = (item.rotation + 3) % 4;
     }
@@ -240,7 +234,7 @@ void ResetItem() {
 
 void ToggleItem() {
     u8 nothing = 0;
-    DoStuff(nothing, TogglePixel);
+    CheckPosition(nothing, TogglePixel);
 }
 
 u8 IsRotate() {
@@ -288,7 +282,8 @@ void Update() {
         ResetItem();
         return;
     }
-    item.y++;
+    timer = (timer + 1) % TICKS_FOR_MOVE;
+    if(timer == 0) item.y++;
     if (IsDrop()) {
         while (IsMoveable(DOWN)) {
             item.y++;
@@ -296,23 +291,7 @@ void Update() {
         return;
     }
     if (IsRotate() && IsMoveable(ROTATION)) {
-        switch (item.rotation)
-        {
-        case UP:
-            item.rotation = RIGHT;
-            break;
-        case RIGHT:
-            item.rotation = DOWN;
-            break;
-        case DOWN:
-            item.rotation = LEFT;
-            break;
-        case LEFT:
-            item.rotation = UP;
-            break;
-        default:
-            break;
-        }
+        item.rotation = (item.rotation + 1) % 4;
     }
     if (IsLeft() && IsMoveable(LEFT)) {
         item.x--;
@@ -328,7 +307,6 @@ int main()
     ResetMatrix();
     ToggleItem();
     PrintMatrix();
-
 
     while (true)
     {
