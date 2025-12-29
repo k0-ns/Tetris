@@ -142,7 +142,6 @@
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tetris.cpp" />
-    <ClCompile Include="tetris2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="driver.h" />
