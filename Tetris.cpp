@@ -233,7 +233,7 @@ void Update() {
             while (IsMoveable(DOWN)) {
                 item.y++;
             }
-            if (ticks_for_move > 1) {
+            if (ticks_for_move > HOLD_PAUSE * 2) {
                 ticks_for_move--;
             }
             ticks_drop = 1;
