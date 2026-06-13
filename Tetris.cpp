@@ -10,7 +10,7 @@ u16 ticks_left = 0;
 u16 ticks_right = 0;
 u16 ticks_rotate = 0;
 u16 ticks_drop = 0;
-u16 ticks_upside_down = 0;
+u16 ticks_upside_down = 1;
 u8 is_end = 0;
 u8 is_upside_down = 0;
 
@@ -294,6 +294,8 @@ void Tetris() {
         ToggleItem();
         if (is_end == 1) {
             ticks_for_move = 30;
+            ticks_upside_down = 1;
+            is_upside_down = 0;
             ResetMatrix();
             return;
         }

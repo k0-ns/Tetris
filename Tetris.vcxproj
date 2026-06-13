@@ -139,16 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="brightness.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="start.cpp" />
     <ClCompile Include="tetris.cpp" />
     <ClCompile Include="text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="brightness.h" />
     <ClInclude Include="driver.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="menu.h" />
+    <ClInclude Include="start.h" />
     <ClInclude Include="tetris.h" />
     <ClInclude Include="text.h" />
   </ItemGroup>

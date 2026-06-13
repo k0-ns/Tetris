@@ -178,3 +178,11 @@ void SleepMs(u16 ms) {
 	Sleep(ms);
 }
 
+void InitMAX() {
+	return;
+}
+
+void SetBrightness(u8 brightness) {
+	return;
+}
+

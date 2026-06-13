@@ -250,6 +250,14 @@ u8 letter_r[LETTER_HEIGHT][LETTER_WIDTH] = {
 	{PIXEL_ON, PIXEL_OFF, PIXEL_ON, 0, 0},
 };
 
+u8 letter_dot[LETTER_HEIGHT][LETTER_WIDTH] = {
+	{PIXEL_OFF, 0, 0, 0, 0},
+	{PIXEL_OFF, 0, 0, 0, 0},
+	{PIXEL_OFF, 0, 0, 0, 0},
+	{PIXEL_OFF, 0, 0, 0, 0},
+	{PIXEL_ON, 0, 0, 0, 0},
+};
+
 
 i8 DisplayLetter(i8 x, i8 y, u8 letter[LETTER_HEIGHT][LETTER_WIDTH]) {
 	if (x == -100) {
@@ -352,6 +360,8 @@ i8 PrintLetter(i8 x, i8 y, u8 letter) {
 		return DisplayLetter(x, y, letter_u);
 	case 'r':
 		return DisplayLetter(x, y, letter_r);
+	case '.':
+		return DisplayLetter(x, y, letter_dot);
 	default:
 		break;
 	}
@@ -363,7 +373,6 @@ void PrintText(i8 x, i8 y, u8* text, u8 length) {
 	for (u8 i = 0; i < length; i++) {
 		add_interval += PrintLetter(x, y - add_interval, text[i]) + 1;
 	}
-	PrintMatrix(0);
 }
 
 u8 CalculateLengthLetter(u8 letter) {
@@ -381,6 +390,6 @@ u8 CalculateLengthText(u8* text, u8 length) {
 
 void PrintTextCentered(i8 x, i8 y, u8* text, u8 length) {
 	u8 text_length = CalculateLengthText(text, length);
-	PrintText(x, y + text_length / 2 - 1 , text, length);
+	PrintText(x, y + text_length / 2 , text, length);
 }
 

@@ -7,12 +7,16 @@
 #define DATA_PIN GPIO_PIN_8
 #define CLOCK_PIN GPIO_PIN_13
 #define CS_PIN GPIO_PIN_15
+#define DEFAULT_BRIGHTNESS 0x08
 
 typedef uint8_t u8;
 typedef int8_t i8;
 typedef uint16_t u16;
 typedef int16_t i16;
 
+void SetBrightness(u8 brightness);
+
+void InitMAX();
 void ResetMatrix();
 void PrintMatrix(u8 is_upside_down);
 
