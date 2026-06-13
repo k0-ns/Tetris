@@ -22,15 +22,23 @@ void Brightness() {
 		SetPixel(2, base_y);
 		SetPixel(3, base_y + 1);
 		SetPixel(4, base_y + 1);
+		SetPixel(3, base_y);
+		SetPixel(4, base_y);
 		SetPixel(5, base_y);
 		SetPixel(2, base_y - MAX_BRIGHTNESS);
 		SetPixel(3, base_y - 1 - MAX_BRIGHTNESS);
 		SetPixel(4, base_y - 1 - MAX_BRIGHTNESS);
 		SetPixel(5, base_y - MAX_BRIGHTNESS);
+		if (brightness == MAX_BRIGHTNESS) {
+			SetPixel(3, base_y - MAX_BRIGHTNESS);
+			SetPixel(4, base_y - MAX_BRIGHTNESS);
+		}
 		for (i8 i = 1; i < MAX_BRIGHTNESS; i++) {
 			if (i < brightness) {
+				SetPixel(2, base_y - i);
 				SetPixel(3, base_y - i);
 				SetPixel(4, base_y - i);
+				SetPixel(5, base_y - i);
 			}
 			SetPixel(1, base_y - i);
 			SetPixel(6, base_y - i);

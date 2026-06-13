@@ -6,6 +6,7 @@
 #include "brightness.h"
 
 u8 current_menu_item = 0;
+u8 reset_button_lock = 0;
 
 u8 IsMenuLeft() {
     return IsButton(1);
@@ -17,6 +18,10 @@ u8 IsMenuRight() {
 
 u8 IsMenuSelected() {
     return IsButton(5);
+}
+
+u8 IsMenuReset() {
+    return IsButton(6) || IsButton(3);
 }
 
 void MenuTransition(u8* old_pointer_to_str, u8 old_length, u8* new_pointer_to_str, u8 new_length, u8 direction) {
@@ -32,6 +37,17 @@ void MenuTransition(u8* old_pointer_to_str, u8 old_length, u8* new_pointer_to_st
         PrintMatrix(0);
     }
 }
+
+void ResetTransition(u8* old_pointer_to_str, u8 old_length, u8* new_pointer_to_str, u8 new_length) {
+    ResetMatrix();
+    for (i8 i = 0; i < WIDTH; i++) {
+        ResetMatrix();
+        PrintTextCentered(1 - i, HEIGHT / 2 - 1, old_pointer_to_str, old_length);
+        PrintTextCentered(1 + WIDTH - i, HEIGHT / 2 - 1, new_pointer_to_str, new_length);
+        PrintMatrix(0);
+    }
+}
+
 
 void DrawMenuArrowRight() {
     i8 base_x = WIDTH / 2;
@@ -153,6 +169,16 @@ u8 Menu() {
             PrintTextCentered(1, HEIGHT / 2 - 1, new_pointer_to_str, new_length);
         }
         PrintMatrix(0);
+        if (IsMenuReset() && !reset_button_lock) {
+            current_menu_item = 0;
+            u8* new_pointer_to_str = &tetris_str[0];
+            u8 new_length = 6;
+            ResetTransition(pointer_to_str, length, new_pointer_to_str, new_length);
+            reset_button_lock = 1;
+        }
+        if (!IsMenuReset()) {
+            reset_button_lock = 0;
+        }
         if (IsMenuSelected()) {
             return current_menu_item;
         }
@@ -169,7 +195,9 @@ void Start() {
         break;
     case BRIGHTNESS:
         Brightness();
+        break;
     }
+    reset_button_lock = 1;
     //DebugPoint();
 
 }
