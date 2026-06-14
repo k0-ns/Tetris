@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="brightness.cpp" />
+    <ClCompile Include="draw.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="start.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="brightness.h" />
+    <ClInclude Include="draw.h" />
     <ClInclude Include="driver.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="start.h" />

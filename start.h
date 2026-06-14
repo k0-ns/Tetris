@@ -4,7 +4,7 @@
 enum {
     TETRIS = 0,
     BRIGHTNESS = 1,
-    TEST = 2,
+    DRAW = 2,
     TEST2 = 3
 };
 

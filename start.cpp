@@ -3,6 +3,7 @@
 #include "start.h"
 #include "text.h"
 #include "tetris.h"
+#include "draw.h"
 #include "brightness.h"
 
 u8 current_menu_item = 0;
@@ -90,6 +91,7 @@ u8 IsMostRight() {
 u8 Menu() {
     u8 tetris_str[] = "TETPiC";
     u8 brightness_str[] = "rPKCTq";
+    u8 draw_str[] = "KiCTq";
     u8 test_str[] = "TECT";
     u8 default_str[] = "AXYEl";
     u8* pointer_to_str = &default_str[0];
@@ -107,9 +109,9 @@ u8 Menu() {
             pointer_to_str = &brightness_str[0];
             length = 6;
             break;
-        case TEST:
-            pointer_to_str = &test_str[0];
-            length = 4;
+        case DRAW:
+            pointer_to_str = &draw_str[0];
+            length = 5;
             break;
         case TEST2:
             pointer_to_str = &test_str[0];
@@ -154,9 +156,9 @@ u8 Menu() {
                 new_pointer_to_str = &brightness_str[0];
                 new_length = 6;
                 break;
-            case TEST:
-                new_pointer_to_str = &test_str[0];
-                new_length = 4;
+            case DRAW:
+                new_pointer_to_str = &draw_str[0];
+                new_length = 5;
                 break;
             case TEST2:
                 new_pointer_to_str = &test_str[0];
@@ -195,6 +197,9 @@ void Start() {
         break;
     case BRIGHTNESS:
         Brightness();
+        break;
+    case DRAW:
+        Draw();
         break;
     }
     reset_button_lock = 1;
